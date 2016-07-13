@@ -8,35 +8,36 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 redis = r.StrictRedis(host='localhost', port=6379, db=0) # تنظیمات ردیس
 bot = telebot.TeleBot('TOKEN')
-admin = 'ایدی عددی ادمین'
+admin = 'ID ADMIN'
 
 @bot.message_handler(content_types=['text', 'audio', 'document', 'photo', 'sticker'])
 def m(m):
     try:
         if m.chat.type == 'private':
             banlist = redis.sismember('banlist_pmbot', '{}'.format(m.from_user.id))
+            if m.text == '/start' or m.text == '/help':
+                bot.send_message(m.chat.id, 'پیام خودتونو ارسال کنید\n @taylor_team')
+                redis.sadd('member_pmbot','{}'.format(m.from_user.id))
             if str(m.from_user.id) not in admin:
                 if str(banlist) == 'False':
-                    if m.text == '/start' or '/help':
-                        bot.send_message(m.chat.id, 'پیام خود را ارسال کنید \n @taylor_team')
-                    elif m.photo:
+                    if m.photo:
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
-                    elif m.text:
+                    if m.text:
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
-                    elif m.document:
+                    if m.document:
                         file_id = m.document.file_id
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
-                    elif m.sticker:
+                    if m.sticker:
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
-                    elif m.audio:
+                    if m.audio:
                         file_id = m.audio.file_id
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
-                    elif m.contact:
+                    if m.contact:
                         bot.forward_message(chat_id=admin, from_chat_id=m.chat.id, message_id=m.message_id)
                         bot.send_message(m.chat.id, 'پیام شما ارسال شد')
         if str(m.from_user.id) == admin:
