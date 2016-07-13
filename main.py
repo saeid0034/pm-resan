@@ -7,8 +7,8 @@ import os
 reload(sys)
 sys.setdefaultencoding("utf-8")
 redis = r.StrictRedis(host='localhost', port=6379, db=0) # تنظیمات ردیس
-bot = telebot.TeleBot('TOKEN')
-admin = 'ID ADMIN'
+bot = telebot.TeleBot('267820060:AAGi4t4fMnaymzm6ROprOJUCBXgbqyhshs0')
+admin = '132556621'
 
 @bot.message_handler(content_types=['text', 'audio', 'document', 'photo', 'sticker'])
 def m(m):
